@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { createNote } from '../../services/NoteService';
 import css from './NoteForm.module.css';
-import { ErrorMessage, Field, Formik, type FormikHelpers } from 'formik';
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import type { NoteFormValues } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as Yup from 'yup';
@@ -18,6 +18,7 @@ const initialValues: NoteFormValues = {
 
 export default function NoteForm({ onSuccess }: NoteFormProps) {
   const queryClient = useQueryClient();
+  const fieldId = useId();
 
   const NoteFormSchema = Yup.object().shape({
     title: Yup.string()
@@ -28,7 +29,9 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
     tag: Yup.string(),
   });
 
-  const { mutate, isPending } = useMutation({
+  // { mutate, isPending }
+
+  const createNoteM = useMutation({
     mutationFn: createNote,
     onSuccess: data => {
       console.log(data);
@@ -40,13 +43,12 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
     },
   });
 
-  const fieldId = useId();
   const handleSubmit = (
     values: NoteFormValues,
     actions: FormikHelpers<NoteFormValues>
   ) => {
     console.log(values);
-    mutate(values);
+    createNoteM.mutate(values);
     actions.resetForm();
   };
   return (
@@ -55,7 +57,7 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
       onSubmit={handleSubmit}
       validationSchema={NoteFormSchema}
     >
-      <form className={css.form}>
+      <Form className={css.form}>
         <div className={css.formGroup}>
           <label htmlFor={`${fieldId}-title`}>Title</label>
           <Field
@@ -103,12 +105,12 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
           <button
             type="submit"
             className={css.submitButton}
-            disabled={isPending}
+            disabled={createNoteM.isPending}
           >
             Create note
           </button>
         </div>
-      </form>
+      </Form>
     </Formik>
   );
 }
