@@ -5,6 +5,19 @@ export interface Note {
   tag: string;
 }
 
-export interface CreateNote {
-  text: string;
+// export interface CreateNote {
+//   title: string;
+//   content: string;
+//   tag: string;
+// }
+
+export interface NoteHTTPResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
+export interface NoteFormValues {
+  title: string;
+  content: string;
+  tag: string;
 }
