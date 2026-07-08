@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { createNote } from '../../services/NoteService';
+import { createNote } from '../../services/noteService';
 import css from './NoteForm.module.css';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import type { NoteFormValues } from '../../types/note';
