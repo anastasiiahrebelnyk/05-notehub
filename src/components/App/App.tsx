@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import NoteList from '../NoteList/NoteList';
 import css from './App.module.css';
 import { fetchNotes } from '../../services/noteService';
@@ -22,17 +22,12 @@ export default function App() {
     setCurrentPage(1);
   }, 1000);
 
-  // const handleSearch = (search: string) => {
-  //   setSearch(search);
-  // };
-
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['notes', search, currentPage],
     queryFn: () => fetchNotes(currentPage, search),
-    // placeholderData: keepPreviousData,
+    placeholderData: keepPreviousData,
   });
 
-  // const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
 
   return (

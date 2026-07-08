@@ -2,22 +2,15 @@ export interface Note {
   id: string;
   title: string;
   content: string;
-  tag: string;
-}
-
-// export interface CreateNote {
-//   title: string;
-//   content: string;
-//   tag: string;
-// }
-
-export interface NoteHTTPResponse {
-  notes: Note[];
-  totalPages: number;
+  tag: Tag;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface NoteFormValues {
   title: string;
   content: string;
-  tag: string;
+  tag: Tag;
 }
+
+export type Tag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';

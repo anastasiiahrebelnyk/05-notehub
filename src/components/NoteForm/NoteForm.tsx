@@ -26,10 +26,8 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
       .max(50, 'Title is too long')
       .required('Title is required'),
     content: Yup.string().max(500, 'Content is too long'),
-    tag: Yup.string(),
+    tag: Yup.string<'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping'>(),
   });
-
-  // { mutate, isPending }
 
   const createNoteM = useMutation({
     mutationFn: createNote,
@@ -51,6 +49,7 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
     createNoteM.mutate(values);
     actions.resetForm();
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -99,7 +98,11 @@ export default function NoteForm({ onSuccess }: NoteFormProps) {
         </div>
 
         <div className={css.actions}>
-          <button type="button" className={css.cancelButton}>
+          <button
+            type="button"
+            className={css.cancelButton}
+            onClick={onSuccess}
+          >
             Cancel
           </button>
           <button

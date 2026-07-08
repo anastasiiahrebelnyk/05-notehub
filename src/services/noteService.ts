@@ -1,7 +1,12 @@
 import axios from 'axios';
-import type { Note, NoteFormValues, NoteHTTPResponse } from '../types/note';
+import type { Note, NoteFormValues } from '../types/note';
 
 const API_KEY = import.meta.env.VITE_NOTEHUB_TOKEN;
+
+export interface NoteHTTPResponse {
+  notes: Note[];
+  totalPages: number;
+}
 
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
@@ -31,10 +36,11 @@ export const createNote = async (values: NoteFormValues): Promise<Note> => {
   return data;
 };
 
-export const deleteNote = async (noteId: Note['id']): Promise<void> => {
-  await axios.delete(`/notes/${noteId}`, {
+export const deleteNote = async (noteId: Note['id']): Promise<Note> => {
+  const { data } = await axios.delete(`/notes/${noteId}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
     },
   });
+  return data;
 };
